@@ -1,40 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lemin.h                                            :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/09 18:40:47 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/09 18:58:49 by tberthie         ###   ########.fr       */
+/*   Created: 2017/03/09 18:47:36 by tberthie          #+#    #+#             */
+/*   Updated: 2017/03/09 19:09:56 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEMIN_H
-# define LEMIN_H
+#include "lemin.h"
 
-typedef struct		s_room
+#include "libft.h"
+
+#include <stdlib.h>
+
+static char		parse_rooms(t_lemin *lemin)
 {
-	char			*name;
-	struct s_room	**links;
+	return (1);
+}
 
-	int				x;
-	int				y;
-}					t_room;
-
-typedef struct		s_lemin
+char			parse(t_lemin *lemin)
 {
-	t_room			**rooms;
+	char		*line;
 
-	t_room			*start;
-	t_room			*end;
-
-	int				ants;
-
-	char			pad[4];
-}					t_lemin;
-
-char				parse(t_lemin *lemin);
-void				solve(t_lemin *lemin);
-
-#endif
+	if (!(line = ft_gnl(0)) || (lemin->ants = ft_atoi(line)) <= 0 ||
+	line[ft_intlen(lemin->ants)] || !parse_rooms(lemin))
+	{
+		ft_printf(2, "ERROR\n");
+		return (0);
+	}
+	if (line)
+		free(line);
+	return (1);
+}
