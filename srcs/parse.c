@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 18:47:36 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 18:59:26 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/24 23:18:54 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static char		**parse_links(t_lemin *lemin, char **lines)
 	int		i;
 	int		j;
 
+	lines = skip_coms(lines);
 	while (*lines)
 	{
 		if (ft_strcount(*lines, '-') != 1 || ft_parrlen((void**)(split =
@@ -61,7 +62,7 @@ static char		**parse_links(t_lemin *lemin, char **lines)
 		ft_parrpush((void***)&lemin->rooms[i]->links, lemin->rooms[j]);
 		ft_parrpush((void***)&lemin->rooms[j]->links, lemin->rooms[i]);
 		ft_parrfree((void**)split);
-		lines++;
+		lines = skip_coms(lines + 1);
 	}
 	return (lines);
 }
@@ -84,6 +85,7 @@ static char		**parse_rooms(t_lemin *lemin, char **lines)
 	char		spe;
 
 	spe = 0;
+	lines = skip_coms(lines);
 	while (*lines && !((*lines)[ft_intlen(ft_atoi(*lines))] == '-'))
 	{
 		if (!ft_strcmp(*lines, "##start") || !ft_strcmp(*lines, "##end"))
@@ -97,11 +99,10 @@ static char		**parse_rooms(t_lemin *lemin, char **lines)
 		room->name = ft_strdup(split[0]);
 		room->links = (t_room**)ft_parrnew();
 		if (split[1][ft_intlen(room->x)] || split[2][ft_intlen(room->y)] ||
-		!add_room(lemin, room, spe))
+		!add_room(lemin, room, spe) || (spe = 0))
 			break ;
 		ft_parrfree((void**)split);
-		lines++;
-		spe = 0;
+		lines = skip_coms(lines + 1);
 	}
 	return (parse_links(lemin, spe ? lines - 1 : lines));
 }
@@ -111,18 +112,21 @@ char			parse(t_lemin *lemin)
 	char		*line;
 	char		**lines;
 	char		**offset;
+	int			i;
 
 	lines = (char**)ft_parrnew();
 	while ((line = ft_gnl(0)))
-		*line != '#' || *(line + 1) == '#' ?
-		ft_parrpush((void***)&lines, line) : free(line);
-	if (!*lines || (lemin->ants = ft_atoi(*lines)) <= 0 ||
-	(*lines)[ft_intlen(lemin->ants)])
+		ft_parrpush((void***)&lines, line);
+	i = 0;
+	while (lines[i] && *lines[i] == '#' && *(lines[i] + 1) != '#')
+		i++;
+	if (!lines[i] || (lemin->ants = ft_atoi(lines[i])) <= 0 ||
+	lines[i][ft_intlen(lemin->ants)])
 	{
 		ft_printf(2, "ERROR\n");
 		return (0);
 	}
-	offset = parse_rooms(lemin, &lines[1]);
+	offset = parse_rooms(lemin, &lines[i + 1]);
 	if (check(lemin, lines, offset - lines))
 		return (1);
 	ft_printf(2, "ERROR\n");

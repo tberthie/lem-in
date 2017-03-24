@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 23:06:20 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 23:07:12 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/24 23:17:46 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,11 @@ t_room		**convert_path(t_lemin *lemin, char **path)
 		path++;
 	}
 	return (conv);
+}
+
+char		**skip_coms(char **lines)
+{
+	while (*lines && **lines == '#' && *(*lines + 1) != '#')
+		lines++;
+	return (lines);
 }
