@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 18:49:01 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 21:01:22 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/24 23:07:25 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void		check_ants(t_lemin *lemin)
 		lemin->path_ants[i - 1] -= sum - lemin->ants;
 	ft_putstr(lemin->output);
 	free(lemin->output);
-	run(lemin);	
+	run(lemin);
 }
 
 static void		get_ratio(t_lemin *lemin)
@@ -107,23 +107,6 @@ static void		get_ratio(t_lemin *lemin)
 		i++;
 	}
 	check_ants(lemin);
-}
-
-static t_room	**convert_path(t_lemin *lemin, char **path)
-{
-	t_room	**conv;
-	int		i;
-
-	conv = (t_room**)ft_parrnew();
-	while (*path)
-	{
-		i = 0;
-		while (ft_strcmp(lemin->rooms[i]->name, *path))
-			i++;
-		ft_parrpush((void***)&conv, lemin->rooms[i]);
-		path++;
-	}
-	return (conv);
 }
 
 void			solve(t_lemin *lemin)
