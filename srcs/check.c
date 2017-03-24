@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solve.c                                            :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/09 18:49:01 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 13:32:24 by tberthie         ###   ########.fr       */
+/*   Created: 2017/03/24 12:17:12 by tberthie          #+#    #+#             */
+/*   Updated: 2017/03/24 13:47:10 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,13 @@
 
 #include "libft.h"
 
-void			solve(t_lemin *lemin)
+char		check(t_lemin *lemin)
 {
-	t_room	*room;
-
-	while (*lemin->rooms)
-	{
-		room = *lemin->rooms++;
-		ft_printf(1, "Room %s %d %d\nLinks ", room->name, room->x, room->y);
-		while (*room->links)
-			ft_printf(1, "%s ", (*room->links++)->name);
-		ft_printf(1, "\n\n");
-	}
-	ft_printf(1, "%d paths\n", lemin->paths);
+	if (!lemin->start || !lemin->end)
+		return (0);
+	lemin->paths = ft_parrlen((void**)lemin->start->links);
+	if (ft_parrlen((void**)lemin->end->links) < lemin->paths)
+		lemin->paths = ft_parrlen((void**)lemin->end->links);
+	ft_printf(1, "%d\n", lemin->paths);
+	return (lemin->paths) ? 1 : 0;
 }

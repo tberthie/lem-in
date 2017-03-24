@@ -6,11 +6,11 @@
 #    By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/20 22:18:00 by tberthie          #+#    #+#              #
-#    Updated: 2017/03/09 18:48:57 by tberthie         ###   ########.fr        #
+#    Updated: 2017/03/24 12:52:33 by tberthie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-OBJS = $(addsuffix .o, $(addprefix objs/, main parse solve))
+OBJS = $(addsuffix .o, $(addprefix objs/, main parse check solve))
 
 NAME = lem-in
 

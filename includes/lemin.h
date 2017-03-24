@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 18:40:47 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/10 14:23:50 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/24 13:33:05 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ typedef struct		s_lemin
 	t_room			*end;
 
 	int				ants;
-
-	char			pad[4];
+	unsigned int	paths;
 }					t_lemin;
 
 char				parse(t_lemin *lemin);
+char				check(t_lemin *lemin);
 void				solve(t_lemin *lemin);
 
 #endif
