@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 18:40:47 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 13:33:05 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/24 19:35:32 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@ typedef struct		s_room
 
 	int				x;
 	int				y;
+
+	char			status;
+	char			pad[3];
+
+	int				path;
+	int				pos;
+	int				ant;
 }					t_room;
 
 typedef struct		s_lemin
@@ -30,11 +37,21 @@ typedef struct		s_lemin
 	t_room			*end;
 
 	int				ants;
-	unsigned int	paths;
+	int				next;
+
+	t_room			***paths;
+	unsigned int	npaths;
+
+	char			pad[4];
+
+	double			*ratio;
+	int				*path_ants;
+
+	char			*output;
 }					t_lemin;
 
 char				parse(t_lemin *lemin);
-char				check(t_lemin *lemin);
 void				solve(t_lemin *lemin);
+void				run(t_lemin *lemin);
 
 #endif

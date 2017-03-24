@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 18:47:36 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 13:47:00 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/24 18:59:26 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,27 @@
 
 #include <stdlib.h>
 
-static void		output_data(char **lines, long offset)
+static char		check(t_lemin *lemin, char **lines, long offset)
 {
-	while (offset--)
-		if (**lines != '#' || *(*lines + 1) == '#')
-			ft_printf(1, "%s\n", *lines++);
-	ft_putchar('\n');
+	int		i;
+
+	i = 0;
+	if (!lemin->start || !lemin->end)
+		return (0);
+	lemin->npaths = ft_parrlen((void**)lemin->start->links);
+	if (ft_parrlen((void**)lemin->end->links) < lemin->npaths)
+		lemin->npaths = ft_parrlen((void**)lemin->end->links);
+	if (lemin->npaths)
+	{
+		while (offset--)
+		{
+			ft_strpush(&lines[i], '\n');
+			ft_strspush(&lemin->output, lines[i++]);
+		}
+		ft_strpush(&lemin->output, '\n');
+	}
+	ft_parrfree((void**)lines);
+	return (lemin->npaths) ? 1 : 0;
 }
 
 static char		**parse_links(t_lemin *lemin, char **lines)
@@ -58,6 +73,7 @@ static char		add_room(t_lemin *lemin, t_room *room, char spe)
 	ft_parrpush((void***)&lemin->rooms, room);
 	lemin->start = spe == 1 ? room : lemin->start;
 	lemin->end = spe == 2 ? room : lemin->end;
+	room->status = spe ? 2 : 1;
 	return (1);
 }
 
@@ -107,13 +123,8 @@ char			parse(t_lemin *lemin)
 		return (0);
 	}
 	offset = parse_rooms(lemin, &lines[1]);
-	if (check(lemin))
-	{
-		output_data(lines, offset - lines);
-		ft_parrfree((void**)lines);
+	if (check(lemin, lines, offset - lines))
 		return (1);
-	}
 	ft_printf(2, "ERROR\n");
-	ft_parrfree((void**)lines);
 	return (0);
 }
