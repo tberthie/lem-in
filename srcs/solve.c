@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 18:49:01 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 20:03:51 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/24 21:01:22 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ static t_room	**convert_path(t_lemin *lemin, char **path)
 void			solve(t_lemin *lemin)
 {
 	char		**path;
+	char		**tmp;
 	int			depth;
 
 	depth = 1;
@@ -137,14 +138,14 @@ void			solve(t_lemin *lemin)
 	{
 		path = (char**)ft_parrnew();
 		ft_parrpush((void***)&path, lemin->start->name);
-		depth += (path = find_path(lemin, lemin->start, depth, &path)) ? 0 : 1;
-		if (path)
+		depth += (tmp = find_path(lemin, lemin->start, depth, &path)) ? 0 : 1;
+		if (tmp)
 		{
 			ft_parrpush((void***)&lemin->paths, convert_path(lemin, path));
 			lock_path(lemin, path);
 			lemin->npaths--;
-			free(path);
 		}
+		free(path);
 	}
 	if (!(lemin->npaths = ft_parrlen((void**)lemin->paths)))
 		ft_printf(2, "ERROR\n");
