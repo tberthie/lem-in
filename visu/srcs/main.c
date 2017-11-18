@@ -6,15 +6,32 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 23:28:48 by tberthie          #+#    #+#             */
-/*   Updated: 2017/11/16 22:54:42 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/11/18 21:27:37 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "visu.h"
 
+static char		**remove_comms(char **data)
+{
+	char			**new;
+	unsigned int	i;
+
+	i = 0;
+	new = (char**)ft_parrdup((void**)data);
+	while (i < ft_parrlen((void**)new))
+	{
+		if (*(new[i]) == '#' && *(new[i] + 1) != '#')
+			ft_parrprem((void**)new, new[i--]);
+		i++;
+	}
+	return (new);
+}
+
 static void		setup(char **data)
 {
 	t_visu	*visu;
+	char	**new;
 
 	visu = (t_visu*)ft_memalloc(sizeof(t_visu));
 	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) &&
@@ -24,8 +41,10 @@ static void		setup(char **data)
 	!TTF_Init() && (visu->small = TTF_OpenFont("font.ttf", ROOM / 5)) &&
 	(visu->big = TTF_OpenFont("font.ttf", ROOM / 3)))
 	{
-		visu = parse(visu, data);
+		new = remove_comms(data);
+		visu = parse(visu, new);
 		run(visu);
+		free(new);
 	}
 	else
 		ft_print(2, "lem-in: %s\n", SDL_GetError());

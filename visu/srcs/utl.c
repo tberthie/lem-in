@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 01:42:20 by tberthie          #+#    #+#             */
-/*   Updated: 2017/11/16 23:10:51 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/11/18 20:33:41 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,18 @@ void			print_text_big(t_visu *visu, char *txt, unsigned int color,
 	get_color(0));
 	SDL_BlitSurface(sf, 0, visu->surface, &rc);
 	SDL_FreeSurface(sf);
+}
+
+t_room			*get_room(t_visu *visu, char *name)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < ft_parrlen((void**)visu->rooms))
+	{
+		if (!ft_strcmp(visu->rooms[i]->name, name))
+			return (visu->rooms[i]);
+		i++;
+	}
+	return (0);
 }

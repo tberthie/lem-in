@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 00:18:15 by tberthie          #+#    #+#             */
-/*   Updated: 2017/11/18 14:29:22 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/11/18 20:43:52 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,36 @@
 # include "libft.h"
 # include "SDL.h"
 # include "SDL_ttf.h"
-# include "limits.h"
+
+# include <limits.h>
+# include <math.h>
 
 # define WINX	1500
 # define WINY	1000
 # define ROOM	60
 
+typedef struct	s_room
+{
+	char			*name;
+	int				x;
+	int				y;
+	char			type;
+
+}				t_room;
+
 typedef struct	s_ant
 {
-	unsigned int	room;
-	unsigned int	dest;
+	t_room			*room;
+	t_room			*dest;
 
 }				t_ant;
 
-typedef struct	s_room
+typedef struct	s_link
 {
-	char	*name;
-	int		x;
-	int		y;
-	char	type;
+	char			*start;
+	char			*end;
 
-}				t_room;
+}				t_link;
 
 typedef struct	s_visu
 {
@@ -50,12 +59,14 @@ typedef struct	s_visu
 	char			pause;
 
 	t_room			**rooms;
+	t_room			*end;
+	t_link			**links;
 	t_ant			**ants;
-	int				limits[4]; // [x_min][x_max][y_min][y_max]
+	int				limits[4];
 
-	unsigned int	step; // ants move line
+	unsigned int	step;
 	unsigned int	max_steps;
-	float			status; // % of ants path travelled
+	float			status;
 	char			**moves;
 
 }				t_visu;
@@ -66,7 +77,7 @@ t_visu			*parse(t_visu *visu, char **data);
 
 void			render_rooms(t_visu *visu);
 void			render_ants(t_visu *visu);
-void			refresh_ants(t_visu *visu);
+void			refresh(t_visu *visu);
 void			stats(t_visu *visu);
 
 SDL_Rect		get_rect(int x, int y, int w, int h);
@@ -75,5 +86,6 @@ void			print_text(t_visu *visu, char *txt, unsigned int color,
 				SDL_Rect rc);
 void			print_text_big(t_visu *visu, char *txt, unsigned int color,
 				SDL_Rect rc);
+t_room			*get_room(t_visu *visu, char *name);
 
 #endif

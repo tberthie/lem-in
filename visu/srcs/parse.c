@@ -6,13 +6,13 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 00:49:53 by tberthie          #+#    #+#             */
-/*   Updated: 2017/11/16 23:17:12 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/11/18 21:43:08 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "visu.h"
 
-static t_room	*get_room(char **data, t_visu *visu)
+static t_room	*parse_room(char **data, t_visu *visu)
 {
 	t_room	*room;
 	char	**split;
@@ -20,8 +20,7 @@ static t_room	*get_room(char **data, t_visu *visu)
 
 	type = (!ft_strcmp(*data, "##start") ? 1 : 0) +
 	(!ft_strcmp(*data, "##end") ? 2 : 0);
-	while (**data == '#')
-		data++;
+	data += type ? 1 : 0;
 	room = 0;
 	if (ft_parrlen((void**)(split = ft_strsplit(*data, ' '))) == 3)
 	{
@@ -50,6 +49,34 @@ static void		get_ants(char *amount, t_visu *visu)
 		(t_ant*)ft_memalloc(sizeof(t_ant))));
 }
 
+static void		get_links(t_visu *visu, char **data)
+{
+	char			**split;
+	t_link			*new;
+	unsigned int	i;
+
+	visu->links = (t_link**)ft_parrnew();
+	while (ft_parrlen((void**)(split = ft_strsplit(*data++, '-'))) == 2)
+	{
+		i = 0;
+		while (i++ < ft_parrlen((void**)visu->links))
+			if ((!ft_strcmp(visu->links[i - 1]->start, split[0]) &&
+			!ft_strcmp(visu->links[i - 1]->end, split[1])) ||
+			(!ft_strcmp(visu->links[i - 1]->start, split[1]) &&
+			!ft_strcmp(visu->links[i - 1]->end, split[0])))
+				break ;
+		if (i - 1 == ft_parrlen((void**)visu->links))
+		{
+			new = (t_link*)ft_m(sizeof(t_link));
+			new->start = ft_strdup(split[0]);
+			new->end = ft_strdup(split[1]);
+			ft_parrpush((void***)&visu->links, new);
+		}
+		ft_parrfree((void**)split);
+	}
+	ft_parrfree((void**)split);
+}
+
 t_visu			*parse(t_visu *visu, char **data)
 {
 	t_room	*room;
@@ -62,15 +89,13 @@ t_visu			*parse(t_visu *visu, char **data)
 	visu->limits[2] = INT_MAX;
 	visu->limits[3] = INT_MIN;
 	get_ants(*data, visu);
-	while ((room = get_room(++data, visu)) || **data == '#')
-	{
-		while (**data == '#')
-			data++;
+	while ((room = parse_room(++data, visu)))
 		room ? ft_parrpush((void***)&visu->rooms, room) : 0;
-	}
+	get_links(visu, data);
 	while (**data != 'L')
 		data++;
 	visu->moves = data;
+	visu->step = 0;
 	visu->max_steps = ft_parrlen((void**)data);
 	visu->pause = 1;
 	return (visu);
