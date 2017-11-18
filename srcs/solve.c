@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 18:49:01 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 23:07:25 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/11/10 17:15:32 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void			solve(t_lemin *lemin)
 		free(path);
 	}
 	if (!(lemin->npaths = ft_parrlen((void**)lemin->paths)))
-		ft_printf(2, "ERROR\n");
+		ft_print(2, "ERROR\n");
 	else
 		get_ratio(lemin);
 }

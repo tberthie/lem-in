@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 18:47:36 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 23:18:54 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/11/16 22:52:21 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,12 +123,12 @@ char			parse(t_lemin *lemin)
 	if (!lines[i] || (lemin->ants = ft_atoi(lines[i])) <= 0 ||
 	lines[i][ft_intlen(lemin->ants)])
 	{
-		ft_printf(2, "ERROR\n");
+		ft_print(2, "ERROR\n");
 		return (0);
 	}
 	offset = parse_rooms(lemin, &lines[i + 1]);
 	if (check(lemin, lines, offset - lines))
 		return (1);
-	ft_printf(2, "ERROR\n");
+	ft_print(2, "ERROR\n");
 	return (0);
 }

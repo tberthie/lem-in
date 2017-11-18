@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 17:58:06 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/24 21:02:54 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/10/07 15:25:55 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void		move_ant(t_lemin *lemin, t_room *origin, t_room *dst, int path)
 	}
 	else
 		return ;
-	ft_printf(1, "L%d-%s ", dst->ant, dst->name);
+	ft_print(1, "L%d-%s ", dst->ant, dst->name);
 	if (dst == lemin->end)
 		lemin->ants--;
 }
